@@ -6,9 +6,9 @@ from datetime import datetime
 # Import File
 from kalkulator import KalkulatorKalori
 
-
+# Nama Tab Browser
 st.set_page_config(
-    page_title = "HealtyMe Apps", page_icon = "🍽️"
+    page_title = "HealthyMe Apps", page_icon = "🍽️"
 )
 
 # Configuration Key
@@ -104,8 +104,8 @@ def sidebar_main_app():
     with st.sidebar:
         st.header("Setelah login ")
 
-        selected = option_menu("Main Menu", ["Home", 'BMI Calculator','Tentang BMI', 'Tips','Tentang Kami'], 
-            icons=['house', 'calculator','book', 'heart', 'inbox'], menu_icon="cast")
+        selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu', 'Tips','Tentang Kami'], 
+            icons=['house', 'calculator','book', 'heart', 'inbox'])
         
         if st.button("Logout"):
             logout()
@@ -128,9 +128,9 @@ def show_main_app():
     elif selected == "BMI Calculator":
         KalkulatorKalori().show()
 
-    elif selected == "Tentang BMI":
-        st.title("Tentang BMI")
-        st.write("Informasi tentang BMI...")
+    elif selected == "Rekomendasi Menu":
+        st.title("Rekomendasi Menu")
+        st.write("Informasi Rekomendasi Menu...")
 
 # Logika utama untuk menampilkan halaman yang sesuai
 if st.session_state['user'] is None:
