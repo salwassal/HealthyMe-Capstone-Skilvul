@@ -41,13 +41,13 @@ class KalkulatorKalori:
 
         # Fungsi untuk menghitung TDEE berdasarkan BMR dan tingkat aktivitas
         def calculate_tdee(bmr, activity_level):
-            if activity_level == 'Sangat tidak aktif':
+            if activity_level == 'Sangat jarang : sangat jarang olahraga':
                 return bmr * 1.2
-            elif activity_level == 'Ringan aktif':
+            elif activity_level == 'Jarang : jarang olahraga (1-3 hari/minggu)':
                 return bmr * 1.375
-            elif activity_level == 'Sedang aktif':
+            elif activity_level == 'Normal : normal olahraga (3-5 hari/minggu)':
                 return bmr * 1.55
-            elif activity_level == 'Sangat aktif':
+            elif activity_level == 'Sering : sering olahraga (6-7 hari/minggu)':
                 return bmr * 1.725
             else:
                 return bmr * 1.9
@@ -109,7 +109,11 @@ class KalkulatorKalori:
             st.write(f"Berat Badan Ideal (Metode Devine): {ideal_weight:.2f} kg")
             st.write(f"BMR (menggunakan berat badan ideal): {bmr:.2f} kalori/hari")
             st.write(f"TDEE (Total Kebutuhan Kalori Harian): {tdee:.2f} kalori/hari")
+            st.divider()
             st.write(f"Kebutuhan Kalori Harian (disesuaikan dengan tujuan): {adjusted_tdee:.2f} kalori/hari")
             st.write(f"Karbohidrat: {carbs:.2f} gram/hari")
             st.write(f"Protein: {protein:.2f} gram/hari")
             st.write(f"Lemak: {fat:.2f} gram/hari")
+
+        with st.expander("**Apa yang dimaksud BMI?**"):
+            st.write("Body Mass Index (BMI) atau indeks massa tubuh adalah ukuran yang digunakan untuk mengetahui status gizi seseorang yang didapatkan dari perbandingan berat dan tinggi badan. Perhitungan ini dapat membantu menentukan apakah kamu memiliki berat badan yang kurang, berat badan sehat, kelebihan berat badan, atau obesitas.")
