@@ -77,7 +77,12 @@ class KalkulatorKalori:
         weight = st.number_input("Berat Badan (kg)", min_value=0.0, format="%.2f")
         height = st.number_input("Tinggi Badan (cm)", min_value=0.0, format="%.2f")
         age = st.number_input("Usia (tahun)", min_value=0, format="%d")
-        activity_level = st.selectbox("Tingkat Aktivitas", ["Sangat tidak aktif", "Ringan aktif", "Sedang aktif", "Sangat aktif", "Ekstrem aktif"])
+        activity_level = st.selectbox("Tingkat Aktivitas",
+                                      ["Sangat jarang : sangat jarang olahraga", 
+                                       "Jarang : jarang olahraga (1-3 hari/minggu)", 
+                                       "Normal : normal olahraga  (3-5 hari/minggu)", 
+                                       "Sering : sering olahraga (6-7 hari/minggu)", 
+                                       "Sangat sering : sangat sering olahraga (setiap hari bisa 2x dalam sehari/pekerjaan fisik)"])
         goal = st.selectbox("Tujuan", ["Menurunkan Berat Badan", "Mempertahankan Berat Badan", "Menambah Berat Badan"])
 
 
