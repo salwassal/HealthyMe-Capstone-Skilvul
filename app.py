@@ -12,19 +12,19 @@ st.set_page_config(
     page_title = "HealthyMe Apps", page_icon = "🍽️"
 )
 
-# Menambahkan CSS untuk mengganti background
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("https://img.freepik.com/free-photo/delicious-breakfast-meal-composition_23-2148878838.jpg?t=st=1717472687~exp=1717476287~hmac=330df9123e31cbe475ce88a634794f92795ac3c20b650f0ef87f8ac23da9975f&w=1060");
-        background-size: cover;
-        transition: background 0.5s ease;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# # Menambahkan CSS untuk mengganti background
+# st.markdown(
+#     """
+#     <style>
+#     .stApp {
+#         background-image: url("https://img.freepik.com/free-photo/delicious-breakfast-meal-composition_23-2148878838.jpg?t=st=1717472687~exp=1717476287~hmac=330df9123e31cbe475ce88a634794f92795ac3c20b650f0ef87f8ac23da9975f&w=1060");
+#         background-size: cover;
+#         transition: background 0.5s ease;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 # Configuration Key
 firebaseConfig = {

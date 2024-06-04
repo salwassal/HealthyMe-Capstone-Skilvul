@@ -73,7 +73,6 @@ class KalkulatorKalori:
         goal = st.selectbox("Tujuan", ["Menurunkan Berat Badan", "Mempertahankan Berat Badan", "Menambah Berat Badan"])
 
 
-
         if st.button("Hitung"):
             # Hitung BMI
             bmi = calculate_bmi(weight, height)
