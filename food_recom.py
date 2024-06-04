@@ -15,60 +15,62 @@ class FoodRecom:
         # Baca dataset
         food_df = pd.read_csv('nutrition.csv')
 
-        # Get user's daily calorie, proteins, and fat needs
-        daily_calorie_needs = st.number_input("Enter your daily calorie needs:", min_value=1000, max_value=5000, step=100)
-        daily_proteins_needs = st.number_input("Enter your daily proteins needs (grams):", min_value=10, max_value=300, step=10)
-        daily_fat_needs = st.number_input("Enter your daily fat needs (grams):", min_value=10, max_value=200, step=10)
+        # Dapatkan kebutuhan kalori, protein, dan karbohidrat harian user
+        daily_calorie_needs = st.number_input("Masukkan kebutuhan kalori harian Anda:", min_value=1000, max_value=5000, step=100)
+        daily_proteins_needs = st.number_input("Masukkan kebutuhan protein harian Anda (gram):", min_value=10, max_value=300, step=10)
+        daily_carbs_needs = st.number_input("Masukkan kebutuhan karbohidrat harian Anda (gram):", min_value=50, max_value=500, step=10)
 
-        # Function to recommend foods based on user's needs
-        def recommend_foods(model, food_df, calorie_needs, proteins_needs, fat_needs, excluded_foods):
-            # Predict the cluster for the given needs
-            user_cluster = model.predict([[calorie_needs, proteins_needs, fat_needs]])[0]
-            
-            # Get the foods in the same cluster
-            food_df['cluster'] = model.predict(food_df[['calories', 'proteins', 'fat']])
-            recommended_foods = food_df[(food_df['cluster'] == user_cluster) & (~food_df['name'].isin(excluded_foods))]
-            
-            # Filter foods to match the calorie needs closely
-            recommended_foods = recommended_foods.iloc[(recommended_foods['calories'] - calorie_needs).abs().argsort()[:1]]
-            
-            return recommended_foods
 
-        # Calculate needs for each meal
-        breakfast_needs = (daily_calorie_needs * 0.25, daily_proteins_needs * 0.25, daily_fat_needs * 0.25)
-        lunch_needs = (daily_calorie_needs * 0.30, daily_proteins_needs * 0.30, daily_fat_needs * 0.30)
-        snack_needs = (daily_calorie_needs * 0.15, daily_proteins_needs * 0.15, daily_fat_needs * 0.15)
-        dinner_needs = (daily_calorie_needs * 0.30, daily_proteins_needs * 0.30, daily_fat_needs * 0.30)
+        if st.button("Generate Menu Makanan"):
+            # Fungsi untuk merekomendasikan makanan berdasarkan kebutuhan user
+            def recommend_foods(model, food_df, calorie_needs, proteins_needs, carbs_needs, excluded_foods):
+                # Prediksi cluster untuk kebutuhan yang diberikan
+                user_cluster = model.predict([[calorie_needs, proteins_needs, carbs_needs]])[0]
+                
+                # Dapatkan makanan dalam cluster yang sama
+                food_df['cluster'] = model.predict(food_df[['calories', 'proteins', 'carbohydrate']])
+                recommended_foods = food_df[(food_df['cluster'] == user_cluster) & (~food_df['name'].isin(excluded_foods))]
+                
+                # Filter makanan untuk mencocokkan kebutuhan kalori, protein, karbo dengan lebih dekat
+                recommended_foods = recommended_foods.iloc[(recommended_foods[['calories', 'proteins', 'carbohydrate']] - [calorie_needs, proteins_needs, carbs_needs]).abs().sum(axis=1).argsort()[:5]]
+                
+                return recommended_foods
 
-        # Keep track of recommended foods
-        excluded_foods = []
+            # Hitung kebutuhan untuk setiap kali makan
+            breakfast_needs = (daily_calorie_needs * 0.25, daily_proteins_needs * 0.25, daily_carbs_needs * 0.25)
+            lunch_needs = (daily_calorie_needs * 0.30, daily_proteins_needs * 0.30, daily_carbs_needs * 0.30)
+            snack_needs = (daily_calorie_needs * 0.15, daily_proteins_needs * 0.15, daily_carbs_needs * 0.15)
+            dinner_needs = (daily_calorie_needs * 0.30, daily_proteins_needs * 0.30, daily_carbs_needs * 0.30)
 
-        # Recommend foods for each meal
-        breakfast_recommendations = recommend_foods(model, food_df, *breakfast_needs, excluded_foods)
-        excluded_foods.extend(breakfast_recommendations['name'].tolist())
+            # Melacak makanan yang sudah direkomendasikan
+            excluded_foods = []
 
-        lunch_recommendations = recommend_foods(model, food_df, *lunch_needs, excluded_foods)
-        excluded_foods.extend(lunch_recommendations['name'].tolist())
+            # Rekomendasikan makanan untuk setiap kali makan
+            breakfast_recommendations = recommend_foods(model, food_df, *breakfast_needs, excluded_foods)
+            excluded_foods.extend(breakfast_recommendations['name'].tolist())
 
-        snack_recommendations = recommend_foods(model, food_df, *snack_needs, excluded_foods)
-        excluded_foods.extend(snack_recommendations['name'].tolist())
+            lunch_recommendations = recommend_foods(model, food_df, *lunch_needs, excluded_foods)
+            excluded_foods.extend(lunch_recommendations['name'].tolist())
 
-        dinner_recommendations = recommend_foods(model, food_df, *dinner_needs, excluded_foods)
-        excluded_foods.extend(dinner_recommendations['name'].tolist())
+            snack_recommendations = recommend_foods(model, food_df, *snack_needs, excluded_foods)
+            excluded_foods.extend(snack_recommendations['name'].tolist())
 
-        # Display the recommended foods
-        st.subheader("Recommended Foods for Breakfast:")
-        for _, food in breakfast_recommendations.iterrows():
-            st.write(f"- {food['name']} ({food['calories']} calories, {food['proteins']}g proteins, {food['fat']}g fat)")
+            dinner_recommendations = recommend_foods(model, food_df, *dinner_needs, excluded_foods)
+            excluded_foods.extend(dinner_recommendations['name'].tolist())
 
-        st.subheader("Recommended Foods for Lunch:")
-        for _, food in lunch_recommendations.iterrows():
-            st.write(f"- {food['name']} ({food['calories']} calories, {food['proteins']}g proteins, {food['fat']}g fat)")
+            # Tampilkan makanan yang direkomendasikan
+            st.subheader("Makanan yang Direkomendasikan untuk Sarapan:")
+            for _, food in breakfast_recommendations.iterrows():
+                st.write(f"- {food['name']} ({food['calories']} kalori, {food['proteins']}g protein, {food['carbohydrate']}g karbohidrat)")
 
-        st.subheader("Recommended Foods for Snack:")
-        for _, food in snack_recommendations.iterrows():
-            st.write(f"- {food['name']} ({food['calories']} calories, {food['proteins']}g proteins, {food['fat']}g fat)")
+            st.subheader("Makanan yang Direkomendasikan untuk Makan Siang:")
+            for _, food in lunch_recommendations.iterrows():
+                st.write(f"- {food['name']} ({food['calories']} kalori, {food['proteins']}g protein, {food['carbohydrate']}g karbohidrat)")
 
-        st.subheader("Recommended Foods for Dinner:")
-        for _, food in dinner_recommendations.iterrows():
-            st.write(f"- {food['name']} ({food['calories']} calories, {food['proteins']}g proteins, {food['fat']}g fat)")
+            st.subheader("Makanan yang Direkomendasikan untuk Snack:")
+            for _, food in snack_recommendations.iterrows():
+                st.write(f"- {food['name']} ({food['calories']} kalori, {food['proteins']}g protein, {food['carbohydrate']}g karbohidrat)")
+
+            st.subheader("Makanan yang Direkomendasikan untuk Makan Malam:")
+            for _, food in dinner_recommendations.iterrows():
+                st.write(f"- {food['name']} ({food['calories']} kalori, {food['proteins']}g protein, {food['carbohydrate']}g karbohidrat)")
