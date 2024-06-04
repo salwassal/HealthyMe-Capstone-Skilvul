@@ -89,6 +89,11 @@ def logout():
 def show_login_signup():
     # Main Konten Page Login
     st.title("HealtyMe Aplikasi Web")
+    st.subheader("Eat a Healthy Meal To Help Your Body Heal")
+    # st.header("Ini Header")
+    # st.text("iniitext")
+    # st.markdown("**HELLO** World")
+    # st.markdown("`hellow aku fuser`")
 
     # Menu di sidebar Page Login
     with st.sidebar:
@@ -135,6 +140,8 @@ def show_main_app():
     user_info = db.child("users").child(st.session_state['user']['localId']).get().val()
 
     st.write("Selamat datang, ", user_info['full_name'], "👋")
+    st.divider()
+
 
     if selected == "Home":
         st.title("Halaman Utama")
