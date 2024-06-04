@@ -17,8 +17,9 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("D:\KULIAH\MSIB\Skilvul\Learn\Capstone\asset\1.png");
+        background-image: url("https://img.freepik.com/free-photo/delicious-breakfast-meal-composition_23-2148878838.jpg?t=st=1717472687~exp=1717476287~hmac=330df9123e31cbe475ce88a634794f92795ac3c20b650f0ef87f8ac23da9975f&w=1060");
         background-size: cover;
+        transition: background 0.5s ease;
     }
     </style>
     """,
