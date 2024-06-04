@@ -124,8 +124,8 @@ def sidebar_main_app():
     with st.sidebar:
         st.header("Setelah login ")
 
-        selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu', 'Tips','Tentang Kami'], 
-            icons=['house', 'calculator','book', 'heart', 'inbox'])
+        selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu'], 
+            icons=['house', 'calculator','book'])
         
         if st.button("Logout"):
             logout()
