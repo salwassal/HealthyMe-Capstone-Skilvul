@@ -5,10 +5,24 @@ from streamlit_option_menu import option_menu
 from datetime import datetime
 # Import File
 from kalkulator import KalkulatorKalori
+from food_recom import FoodRecom
 
 # Nama Tab Browser
 st.set_page_config(
     page_title = "HealthyMe Apps", page_icon = "🍽️"
+)
+
+# Menambahkan CSS untuk mengganti background
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("D:\KULIAH\MSIB\Skilvul\Learn\Capstone\asset\1.png");
+        background-size: cover;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
 # Configuration Key
@@ -129,8 +143,7 @@ def show_main_app():
         KalkulatorKalori().show()
 
     elif selected == "Rekomendasi Menu":
-        st.title("Rekomendasi Menu")
-        st.write("Informasi Rekomendasi Menu...")
+        FoodRecom().show()
 
 # Logika utama untuk menampilkan halaman yang sesuai
 if st.session_state['user'] is None:
