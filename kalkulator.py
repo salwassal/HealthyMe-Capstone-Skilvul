@@ -1,4 +1,6 @@
 import streamlit as st
+from PIL import Image
+import os
 
 class KalkulatorKalori:
     def show(self):
@@ -62,8 +64,14 @@ class KalkulatorKalori:
             fat = 0.2 * tdee / 9  # 9 kalori per gram lemak, 0.2  ratio makronutrien
 
             return tdee, carbs, protein, fat
+        
+        st.markdown('<div style="text-align: center;font-size:40px;font-weight:bold;color:black;">Kalkulator Kebutuhan Kalori dan Makronutrien Harian</div>', unsafe_allow_html=True)
 
-        st.title("Kalkulator Kebutuhan Kalori dan Makronutrien Harian")
+        # Path ke gambar dalam folder
+        image_path = os.path.join('asset', 'hitung_kalori.jpg')
+        image = Image.open(image_path)
+        # Tampilkan gambar di Streamlit
+        st.image(image, use_column_width=True)
 
         gender = st.selectbox("Jenis Kelamin", ["Pria", "Wanita"])
         weight = st.number_input("Berat Badan (kg)", min_value=0.0, format="%.2f")
@@ -89,6 +97,7 @@ class KalkulatorKalori:
             
             # Hitung distribusi makronutrien dan kalori harian
             adjusted_tdee, carbs, protein, fat = calculate_macros(tdee, goal)
+            
             
             st.subheader("Hasil Perhitungan Nutrisi Harian")
             st.write(f"BMI: {bmi:.2f} (Kategori: {bmi_category})")
