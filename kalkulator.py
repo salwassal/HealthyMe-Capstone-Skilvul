@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import os
+import time
 
 class KalkulatorKalori:
     def show(self):
@@ -12,17 +13,17 @@ class KalkulatorKalori:
         # Fungsi untuk menentukan kategori BMI
         def determine_bmi_category(bmi):
             if bmi < 18.5:
-                return "Kurus (Kurang Berat Badan)"
+                return "Kurus (Kurang Berat Badan)👎"
             elif 18.5 <= bmi < 24.9:
-                return "Normal (Berat Badan Ideal)"
+                return "Normal (Berat Badan Ideal)👍"
             elif 25 <= bmi < 29.9:
-                return "Berlebih Berat Badan"
+                return "Berlebih Berat Badan🤔"
             elif 30 <= bmi < 34.9:
-                return "Obesitas Tingkat 1"
+                return "Obesitas Tingkat 1🙁"
             elif 35 <= bmi < 39.9:
-                return "Obesitas Tingkat 2 (Berisiko Tinggi)"
+                return "Obesitas Tingkat 2 (Berisiko Tinggi)😣"
             else:
-                return "Obesitas Tingkat 3 (Sangat Berisiko)"
+                return "Obesitas Tingkat 3 (Sangat Berisiko)😨"
 
         # Fungsi untuk menghitung berat badan ideal menggunakan Metode Devine
         def calculate_ideal_weight_devine(gender, height):
@@ -65,55 +66,96 @@ class KalkulatorKalori:
 
             return tdee, carbs, protein, fat
         
+        # Menampilkan judul dan penjelasan alat
         st.markdown('<div style="text-align: center;font-size:40px;font-weight:bold;color:black;">Kalkulator Kebutuhan Kalori dan Makronutrien Harian</div>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center;font-size:18px;">Alat ini membantu Anda menghitung kebutuhan kalori harian dan distribusi makronutrien berdasarkan data pribadi dan tujuan Anda.</p>', unsafe_allow_html=True)
 
-        # Path ke gambar dalam folder
+        # Menampilkan gambar
         image_path = os.path.join('asset', 'hitung_kalori.jpg')
         image = Image.open(image_path)
-        # Tampilkan gambar di Streamlit
         st.image(image, use_column_width=True)
 
-        gender = st.selectbox("Jenis Kelamin", ["Pria", "Wanita"])
-        weight = st.number_input("Berat Badan (kg)", min_value=0.0, format="%.2f")
-        height = st.number_input("Tinggi Badan (cm)", min_value=0.0, format="%.2f")
-        age = st.number_input("Usia (tahun)", min_value=0, format="%d")
-        activity_level = st.selectbox("Tingkat Aktivitas",
-                                      ["Sangat jarang : sangat jarang olahraga", 
-                                       "Jarang : jarang olahraga (1-3 hari/minggu)", 
-                                       "Normal : normal olahraga  (3-5 hari/minggu)", 
-                                       "Sering : sering olahraga (6-7 hari/minggu)", 
-                                       "Sangat sering : sangat sering olahraga (setiap hari bisa 2x dalam sehari/pekerjaan fisik)"])
-        goal = st.selectbox("Tujuan", ["Menurunkan Berat Badan", "Mempertahankan Berat Badan", "Menambah Berat Badan"])
+        # Menampilkan panduan penggunaan
+        st.markdown('<h2 style="text-align: center; color: black;">Masukkan Data Anda</h2>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center;">Masukkan data Anda pada kolom yang tersedia, lalu klik tombol "Hitung" untuk melihat hasil perhitungan.</p>', unsafe_allow_html=True)
+
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            gender = st.selectbox("Jenis Kelamin", ["Pria", "Wanita"], key="gender")
+            weight = st.number_input("Berat Badan (kg) 🏋️", min_value=0.0, format="%.2f", key="weight")
+            height = st.number_input("Tinggi Badan (cm) 📏", min_value=0.0, format="%.2f", key="height")            
+        with col2:
+            age = st.number_input("Usia (tahun)", min_value=0, format="%d", key="age")
+            activity_level = st.selectbox("Tingkat Aktivitas 🏃‍♂️",
+                                          ["Sangat jarang : sangat jarang olahraga", 
+                                           "Jarang : jarang olahraga (1-3 hari/minggu)", 
+                                           "Normal : normal olahraga  (3-5 hari/minggu)", 
+                                           "Sering : sering olahraga (6-7 hari/minggu)", 
+                                           "Sangat sering : sangat sering olahraga (setiap hari bisa 2x dalam sehari/pekerjaan fisik)"], key="activity_level")
+            goal = st.selectbox("Tujuan 🎯", ["Menurunkan Berat Badan", 
+                                              "Mempertahankan Berat Badan", 
+                                              "Menambah Berat Badan"], key="goal")
+
+        hitung_button = st.button("Hitung")
+
+        if hitung_button:
+            # Memeriksa apakah masukan berat badan, tinggi badan, dan usia sudah diisi dengan benar
+            if weight <= 0 or height <= 0 or age <= 0:
+                st.warning("Pastikan untuk mengisi berat badan, tinggi badan, dan usia dengan benar!")
+            else:
+                # Menampilkan spinner loading
+                with st.spinner("Sedang menghitung..."):
+                    # Simulasi proses perhitungan dengan menunggu 2 detik
+                    time.sleep(1.5)
+                
+                # Hitung BMI
+                bmi = calculate_bmi(weight, height)
+                bmi_category = determine_bmi_category(bmi)
+
+                # Hitung berat badan ideal menggunakan Metode Devine
+                ideal_weight = calculate_ideal_weight_devine(gender, height)
+                
+                # Hitung BMR menggunakan berat badan ideal
+                bmr = calculate_bmr_mifflin(gender, ideal_weight, height, age)
+                
+                # Hitung TDEE berdasarkan BMR dan tingkat aktivitas
+                tdee = calculate_tdee(bmr, activity_level)
+                
+                # Hitung distribusi makronutrien dan kalori harian
+                adjusted_tdee, carbs, protein, fat = calculate_macros(tdee, goal)
+                
+                # Menampilkan hasil perhitungan
+                st.subheader("Hasil Perhitungan Nutrisi Harian")
+
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric(label="BMI 📊", value=f"{bmi:.2f}", help="BMI adalah indikator yang digunakan untuk mengukur status gizi seseorang berdasarkan berat dan tinggi badan.")
+                    st.markdown(f"**Kategori BMI**: {bmi_category}")
+                    st.metric(label="Berat Badan Ideal ⚖️", value=f"{ideal_weight:.2f} kg", help="Berat badan ideal dihitung menggunakan Metode Devine berdasarkan tinggi badan dan jenis kelamin.")
+                    st.metric(label="BMR 🔥", value=f"{bmr:.2f} kalori/hari", help="Basal Metabolic Rate (BMR) adalah jumlah kalori yang dibutuhkan tubuh untuk mempertahankan fungsi dasar kehidupan saat istirahat.")
+
+                with col2:
+                    st.metric(label="TDEE 🏃‍♀️", value=f"{tdee:.2f} kalori/hari",  help="Total Daily Energy Expenditure (TDEE) adalah jumlah total kalori yang dibutuhkan setiap hari berdasarkan tingkat aktivitas. Ini mencakup semua aktivitas fisik dan metabolisme basal Anda.")
+                    st.metric(label="Kalori Harian 🍽️", value=f"{adjusted_tdee:.2f} kalori/hari", help="Jumlah kalori harian disesuaikan berdasarkan tujuan Anda (menurunkan, mempertahankan, atau menambah berat badan).")
+                    st.metric(label="Karbohidrat 🍞", value=f"{carbs:.2f} gram/hari")
+                    st.metric(label="Protein 🥩", value=f"{protein:.2f} gram/hari")
+                    st.metric(label="Lemak 🥑", value=f"{fat:.2f} gram/hari")
+
+                # Button untuk clear data
+                clear_button_placeholder = st.empty()
+                with clear_button_placeholder:
+                    if st.button("Hitung ulang"):
+                        st.experimental_rerun()
 
 
-        if st.button("Hitung"):
-            # Hitung BMI
-            bmi = calculate_bmi(weight, height)
-            bmi_category = determine_bmi_category(bmi)
-
-            # Hitung berat badan ideal menggunakan Metode Devine
-            ideal_weight = calculate_ideal_weight_devine(gender, height)
-            
-            # Hitung BMR menggunakan berat badan ideal
-            bmr = calculate_bmr_mifflin(gender, ideal_weight, height, age)
-            
-            # Hitung TDEE berdasarkan BMR dan tingkat aktivitas
-            tdee = calculate_tdee(bmr, activity_level)
-            
-            # Hitung distribusi makronutrien dan kalori harian
-            adjusted_tdee, carbs, protein, fat = calculate_macros(tdee, goal)
-            
-            
-            st.subheader("Hasil Perhitungan Nutrisi Harian")
-            st.write(f"BMI: {bmi:.2f} (Kategori: {bmi_category})")
-            st.write(f"Berat Badan Ideal (Metode Devine): {ideal_weight:.2f} kg")
-            st.write(f"BMR (menggunakan berat badan ideal): {bmr:.2f} kalori/hari")
-            st.write(f"TDEE (Total Kebutuhan Kalori Harian): {tdee:.2f} kalori/hari")
-            st.divider()
-            st.write(f"Kebutuhan Kalori Harian (disesuaikan dengan tujuan): {adjusted_tdee:.2f} kalori/hari")
-            st.write(f"Karbohidrat: {carbs:.2f} gram/hari")
-            st.write(f"Protein: {protein:.2f} gram/hari")
-            st.write(f"Lemak: {fat:.2f} gram/hari")
-
-        with st.expander("**Apa yang dimaksud BMI?**"):
-            st.write("Body Mass Index (BMI) atau indeks massa tubuh adalah ukuran yang digunakan untuk mengetahui status gizi seseorang yang didapatkan dari perbandingan berat dan tinggi badan. Perhitungan ini dapat membantu menentukan apakah kamu memiliki berat badan yang kurang, berat badan sehat, kelebihan berat badan, atau obesitas.")
+        # Penjelasan lebih lanjut tentang hasil perhitungan
+        with st.expander("Penjelasan Hasil Perhitungan 📘"):
+            st.markdown("""
+                - **BMI (Body Mass Index)**: Indeks massa tubuh yang digunakan untuk mengetahui status gizi seseorang. Semakin rendah nilai BMI, semakin rendah berat badan relatif terhadap tinggi badan.
+                - **Berat Badan Ideal**: Berat badan yang dianggap ideal untuk tinggi badan tertentu, dihitung menggunakan Metode Devine.
+                - **BMR (Basal Metabolic Rate)**: Jumlah kalori yang dibutuhkan tubuh saat istirahat untuk menjaga fungsi-fungsi dasar seperti pernapasan, detak jantung, dan fungsi organ tubuh lainnya.
+                - **TDEE (Total Daily Energy Expenditure)**: Total kebutuhan kalori harian yang mencakup aktivitas fisik dan kebutuhan dasar tubuh. TDEE mencerminkan jumlah total kalori yang dibutuhkan tubuh setiap hari.
+                - **Kalori Harian**: Jumlah kalori yang harus dikonsumsi setiap hari berdasarkan tujuan pengguna (menurunkan berat badan, mempertahankan berat badan, atau menambah berat badan).
+                - **Karbohidrat, Protein, dan Lemak**: Distribusi makronutrien yang disesuaikan dengan kebutuhan kalori harian, dihitung berdasarkan rasio standar.
+            """)
