@@ -190,7 +190,7 @@ def show_main_app():
         st.write("Mari memperoleh informasi tentang nutrisi harianmu dan rekomendasi makanan sehat setiap harinya. Ayo buat pilihan makanan sehatmu sendiri melalui saran nutrisi yang telah HealthyMe sediakan.")
 
         # Membuat DataFrame dari sumber data yang diunggah
-        file_path = "C:/HealthyMe-Capstone-Skilvul-main/nutrition.csv"
+        file_path = "nutrition.csv"
         df = pd.read_csv(file_path)
 
         # Membuat container untuk tabel dan grafik
@@ -232,6 +232,7 @@ def show_main_app():
 
     elif selected == "Rekomendasi Menu":
         FoodRecom().show()
+        
     elif selected == "FAQ":
         tentangkami().show()
 

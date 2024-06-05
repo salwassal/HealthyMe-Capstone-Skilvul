@@ -1,2 +1,3 @@
 scikit-learn 1.5.0
 pyrebase
+streamlit-aggrid 1.0.5
