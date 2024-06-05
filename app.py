@@ -6,7 +6,6 @@ st.set_page_config(
     page_title = "HealthyMe Apps", page_icon = "🍽️"
 )
 from streamlit_option_menu import option_menu
-from datetime import datetime
 import pandas as pd
 import plotly.express as px
 from st_aggrid import AgGrid, GridOptionsBuilder
