@@ -10,3 +10,4 @@ plotly
 streamlit-aggrid
 streamlit-lottie
 pickle-mixin
+requests==2.28.0
