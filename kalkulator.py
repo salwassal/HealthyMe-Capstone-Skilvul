@@ -102,7 +102,7 @@ class KalkulatorKalori:
         if hitung_button:
             # Memeriksa apakah masukan berat badan, tinggi badan, dan usia sudah diisi dengan benar
             if weight <= 0 or height <= 0 or age <= 0:
-                st.warning("Pastikan untuk mengisi berat badan, tinggi badan, dan usia dengan benar!")
+                st.warning("⚠️ Pastikan untuk mengisi berat badan, tinggi badan, dan usia dengan benar!")
             else:
                 # Menampilkan spinner loading
                 with st.spinner("Sedang menghitung..."):

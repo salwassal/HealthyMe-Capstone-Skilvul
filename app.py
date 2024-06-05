@@ -4,6 +4,9 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from datetime import datetime
 import re 
+from streamlit_lottie import st_lottie
+import json
+import os
 # Import File
 from kalkulator import KalkulatorKalori
 from food_recom import FoodRecom
@@ -13,19 +16,20 @@ st.set_page_config(
     page_title = "HealthyMe Apps", page_icon = "🍽️"
 )
 
-# # Menambahkan CSS untuk mengganti background
-# st.markdown(
-#     """
-#     <style>
-#     .stApp {
-#         background-image: url("https://img.freepik.com/free-photo/delicious-breakfast-meal-composition_23-2148878838.jpg?t=st=1717472687~exp=1717476287~hmac=330df9123e31cbe475ce88a634794f92795ac3c20b650f0ef87f8ac23da9975f&w=1060");
-#         background-size: cover;
-#         transition: background 0.5s ease;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
+# Menambahkan CSS untuk mengganti background
+st.markdown(
+    """
+    <style>
+    .main-content {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Configuration Key
 firebaseConfig = {
@@ -47,11 +51,9 @@ auth = firebase.auth()
 db = firebase.database()
 storage = firebase.storage()
 
-# === Kodebaru P1 ===
 # Inisialisasi sesi pengguna
 if 'user' not in st.session_state:
     st.session_state['user'] = None
-# === Kodebaru P1 ===
 
 def signup(email, password, full_name, phone):
     try:
@@ -86,9 +88,6 @@ def signup(email, password, full_name, phone):
     except Exception as e:
         st.error(f"Terjadi kesalahan saat membuat akun: {str(e)}")
         return    
-    # except:
-    #     st.error("Terjadi kesalahan saat membuat akun. Pastikan email belum terdaftar dan password minimal 6 karakter.")
-
 
 def login(email, password):
     try:
@@ -108,20 +107,36 @@ def logout():
     st.session_state['user'] = None
     st.success("Berhasil logout!")
 
+# Fungsi untuk memuat file Lottie
+def load_lottiefile(filepath: str):
+    with open(filepath, "r") as f:
+        return json.load(f)
+
 # ==== Kode Baru P1 ===
 def show_login_signup():
     # Main Konten Page Login
     st.title("Selamat datang di HealtyME: Teman Sehat Anda!")
     st.write("Temukan kesehatan melalui pola makan yang tepat.")
     st.write("Silakan login untuk mengakses fitur kalkulator BMI dan sistem rekomendasi makanan.")
-
-    st.write("Kualitas hidup adalah pandangan setiap individu terhadap posisinya dalam kehidupan, salah satunya terkait masalah kesehatan. Menurut WHO, definisi sehat mencakup rumusan secara luas, yaitu keadaan yang sempurna baik fisik, mental maupun sosial, tidak hanya terbebas dari penyakit atau kelemahan/cacat. Menu makanan yang sehat menjadi pilihan bagi siapa saja yang menginginkan perihal diatas. Kriteria menu makanan sehat dan bergizi kerap sekali kita dengar dengan sebutan 4 sehat lima sempurna. Asupan nutrisi dan gizi seimbang setiap makanan beserta nilai gizi esensial tubuh mencakup kandungan vitamin, mineral, karbohidrat, protein, lemak,kalsium, serat dan air dapat membantu tubuh kita menghasilkan cukup energi untuk beraktivitas setiap hari.")
+    
+    # Menampilkan animasi Lottie
+    lottie_path = os.path.join('asset', 'konselor_food.json')
+    lottie_animation = load_lottiefile(lottie_path)
+    st_lottie(lottie_animation, height=300)
+    
+    st.markdown("""
+                <div class ='main-content'"> <p>Kualitas hidup adalah pandangan setiap individu terhadap posisinya dalam kehidupan, salah satunya terkait masalah kesehatan. Menurut WHO, definisi sehat mencakup rumusan secara luas, yaitu keadaan yang sempurna baik fisik, mental maupun sosial, tidak hanya terbebas dari penyakit atau kelemahan/cacat. Menu makanan yang sehat menjadi pilihan bagi siapa saja yang menginginkan perihal diatas. Kriteria menu makanan sehat dan bergizi kerap sekali kita dengar dengan sebutan 4 sehat lima sempurna. Asupan nutrisi dan gizi seimbang setiap makanan beserta nilai gizi esensial tubuh mencakup kandungan vitamin, mineral, karbohidrat, protein, lemak,kalsium, serat dan air dapat membantu tubuh kita menghasilkan cukup energi untuk beraktivitas setiap hari.</p>
+                </div>
+                """, unsafe_allow_html=True)
     st.write("Istilah piramida makanan menggambarkan bahwa asupan nutrisi untuk tubuh dapat dikatakan stabil dan sudah memenuhi kebutuhan gizi setiap harinya. Ilustrasi tersebut dapat membantu seseorang tentang gambaran jumlah porsi makan yang sesuai untuk dikonsumsi setiap hari dari masing-masing kelompok makanan. Kadar kandungan makanan tentunya berbeda-beda tiap jenisnya. Oleh karena itu, melalui adanya website berbasis rekomendasi makanan ini diharapkan mampu mendukung gaya hidup sehat sehingga dapat menekan jumlah angka penyakit akibat konsumsi makanan tidak sehat.")
 
     # Informasi tambahan tentang manfaat menggunakan HealtyME
     st.subheader("Mengapa Memilih HealtyME?")
     st.write("HealtyME dirancang untuk membantu Anda mencapai gaya hidup sehat dengan mudah dan menyenangkan.")
 
+    st.header("Fitur - Fitur")
+    
+    
 
     # Menu di sidebar Page Login
     with st.sidebar:
