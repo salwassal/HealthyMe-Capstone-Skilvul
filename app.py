@@ -3,6 +3,9 @@ import pyrebase
 import streamlit as st
 from streamlit_option_menu import option_menu
 from datetime import datetime
+import pandas as pd
+import plotly.express as px
+from st_aggrid import AgGrid, GridOptionsBuilder
 import re 
 from streamlit_lottie import st_lottie
 import json
@@ -10,26 +13,22 @@ import os
 # Import File
 from kalkulator import KalkulatorKalori
 from food_recom import FoodRecom
-
+from tentang_kami import tentangkami
 # Nama Tab Browser
 st.set_page_config(
     page_title = "HealthyMe Apps", page_icon = "🍽️"
 )
 
 # Menambahkan CSS untuk mengganti background
-st.markdown(
-    """
+st.markdown("""
     <style>
-    .main-content {
-        background: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+     .stApp {
+        background-image: url("https://img.freepik.com/free-vector/blurred-white-background-with-shine-effect_1017-33200.jpg?t=st=1717596227~exp=1717599827~hmac=fd818c36fa40c8ee78e1ca882c4ef974970b4cca162b634a0267843fc19e21dc&w=826");
+        background-size: cover;
+        transition: background 0.5s ease;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """, unsafe_allow_html=True)
 
 # Configuration Key
 firebaseConfig = {
@@ -112,6 +111,7 @@ def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
         return json.load(f)
 
+
 # ==== Kode Baru P1 ===
 def show_login_signup():
     # Main Konten Page Login
@@ -119,7 +119,7 @@ def show_login_signup():
     st.write("Temukan kesehatan melalui pola makan yang tepat.")
     st.write("Silakan login untuk mengakses fitur kalkulator BMI dan sistem rekomendasi makanan.")
     
-    # Menampilkan animasi Lottie
+# Menampilkan animasi Lottie
     lottie_path = os.path.join('asset', 'konselor_food.json')
     lottie_animation = load_lottiefile(lottie_path)
     st_lottie(lottie_animation, height=300)
@@ -167,8 +167,8 @@ def sidebar_main_app():
     with st.sidebar:
         st.header("Setelah login ")
 
-        selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu'], 
-            icons=['house', 'calculator','book'])
+        selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu','FAQ'], 
+            icons=['house', 'calculator','book','question-circle'])
         
         if st.button("Logout"):
             logout()
@@ -186,14 +186,54 @@ def show_main_app():
     st.divider()
 
     if selected == "Home":
-        st.title("Halaman Utama")
-        st.write("Konten untuk Halaman Utama")
+        st.title("Selamat Datang di HealthyMe")
+        st.write("Mari memperoleh informasi tentang nutrisi harianmu dan rekomendasi makanan sehat setiap harinya. Ayo buat pilihan makanan sehatmu sendiri melalui saran nutrisi yang telah HealthyMe sediakan.")
+
+        # Membuat DataFrame dari sumber data yang diunggah
+        file_path = "C:/HealthyMe-Capstone-Skilvul-main/nutrition.csv"
+        df = pd.read_csv(file_path)
+
+        # Membuat container untuk tabel dan grafik
+        with st.container():
+            # Tampilkan DataFrame sebagai tabel dengan AgGrid
+            st.subheader("Data Nutrisi Makanan Sehat")
+            gb = GridOptionsBuilder.from_dataframe(df)
+            gb.configure_pagination(paginationAutoPageSize=True)  # Mengatur paginasi otomatis
+            gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
+            gb.configure_side_bar()  # Menambahkan sidebar untuk fitur pencarian
+            gridOptions = gb.build()
+
+            AgGrid(
+                df,
+                gridOptions=gridOptions,
+                enable_enterprise_modules=True,
+                update_mode='MODEL_CHANGED',
+            
+            )
+
+            st.caption("Dataset di atas menunjukkan kandungan kalori, protein, lemak, dan karbohidrat dari berbagai makanan sehat.")
+
+            # Layout grafik dalam satu baris dengan lebar penuh
+            st.subheader("Scatter Plot Nutrisi Makanan Sehat")
+
+
+   
+            fig_scatter1 = px.scatter(df, x='calories', y='proteins', color='name',
+                                        title='Scatter Plot Kalori vs Protein')
+            st.plotly_chart(fig_scatter1, use_container_width=True)
+
+            fig_scatter2 = px.scatter(df, x='calories', y='fat', color='name',
+                                        title='Scatter Plot Kalori vs Lemak')
+            st.plotly_chart(fig_scatter2, use_container_width=True)
+
 
     elif selected == "BMI Calculator":
         KalkulatorKalori().show()
 
     elif selected == "Rekomendasi Menu":
         FoodRecom().show()
+    elif selected == "FAQ":
+        tentangkami().show()
 
 # Logika utama untuk menampilkan halaman yang sesuai
 if st.session_state['user'] is None:
