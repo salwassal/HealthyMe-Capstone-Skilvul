@@ -1,9 +1,8 @@
 scikit-learn
-pyrebase
 urllib3
 pandas
 streamlit
-pyrebase
+pyrebase4==4.5.0
 streamlit-option-menu
 pandas
 plotly
