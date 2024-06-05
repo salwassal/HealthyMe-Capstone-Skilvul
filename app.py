@@ -3,6 +3,7 @@ import pyrebase
 import streamlit as st
 from streamlit_option_menu import option_menu
 from datetime import datetime
+import re 
 # Import File
 from kalkulator import KalkulatorKalori
 from food_recom import FoodRecom
@@ -54,6 +55,24 @@ if 'user' not in st.session_state:
 
 def signup(email, password, full_name, phone):
     try:
+        # Validasi input email
+        if not email:
+            st.error("Email tidak boleh kosong!")
+            return
+
+        elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            st.error("Masukkan email yang valid!")
+            return
+
+        # Validasi input password
+        if not password:
+            st.error("Password tidak boleh kosong!")
+            return
+
+        elif len(password) < 6:
+            st.error("Password harus memiliki minimal 6 karakter!")
+            return
+
         user = auth.create_user_with_email_and_password(email, password)
         user_id = user['localId']
         # Simpan data diri pengguna di database
@@ -64,8 +83,12 @@ def signup(email, password, full_name, phone):
         }
         db.child("users").child(user_id).set(data)
         st.success("Akun berhasil dibuat! Silakan login.")
-    except:
-        st.error("Terjadi kesalahan saat membuat akun. Pastikan email belum terdaftar dan password minimal 6 karakter.")
+    except Exception as e:
+        st.error(f"Terjadi kesalahan saat membuat akun: {str(e)}")
+        return    
+    # except:
+    #     st.error("Terjadi kesalahan saat membuat akun. Pastikan email belum terdaftar dan password minimal 6 karakter.")
+
 
 def login(email, password):
     try:
@@ -88,12 +111,17 @@ def logout():
 # ==== Kode Baru P1 ===
 def show_login_signup():
     # Main Konten Page Login
-    st.title("HealtyMe Aplikasi Web")
-    st.subheader("Eat a Healthy Meal To Help Your Body Heal")
-    # st.header("Ini Header")
-    # st.text("iniitext")
-    # st.markdown("**HELLO** World")
-    # st.markdown("`hellow aku fuser`")
+    st.title("Selamat datang di HealtyME: Teman Sehat Anda!")
+    st.write("Temukan kesehatan melalui pola makan yang tepat.")
+    st.write("Silakan login untuk mengakses fitur kalkulator BMI dan sistem rekomendasi makanan.")
+
+    st.write("Kualitas hidup adalah pandangan setiap individu terhadap posisinya dalam kehidupan, salah satunya terkait masalah kesehatan. Menurut WHO, definisi sehat mencakup rumusan secara luas, yaitu keadaan yang sempurna baik fisik, mental maupun sosial, tidak hanya terbebas dari penyakit atau kelemahan/cacat. Menu makanan yang sehat menjadi pilihan bagi siapa saja yang menginginkan perihal diatas. Kriteria menu makanan sehat dan bergizi kerap sekali kita dengar dengan sebutan 4 sehat lima sempurna. Asupan nutrisi dan gizi seimbang setiap makanan beserta nilai gizi esensial tubuh mencakup kandungan vitamin, mineral, karbohidrat, protein, lemak,kalsium, serat dan air dapat membantu tubuh kita menghasilkan cukup energi untuk beraktivitas setiap hari.")
+    st.write("Istilah piramida makanan menggambarkan bahwa asupan nutrisi untuk tubuh dapat dikatakan stabil dan sudah memenuhi kebutuhan gizi setiap harinya. Ilustrasi tersebut dapat membantu seseorang tentang gambaran jumlah porsi makan yang sesuai untuk dikonsumsi setiap hari dari masing-masing kelompok makanan. Kadar kandungan makanan tentunya berbeda-beda tiap jenisnya. Oleh karena itu, melalui adanya website berbasis rekomendasi makanan ini diharapkan mampu mendukung gaya hidup sehat sehingga dapat menekan jumlah angka penyakit akibat konsumsi makanan tidak sehat.")
+
+    # Informasi tambahan tentang manfaat menggunakan HealtyME
+    st.subheader("Mengapa Memilih HealtyME?")
+    st.write("HealtyME dirancang untuk membantu Anda mencapai gaya hidup sehat dengan mudah dan menyenangkan.")
+
 
     # Menu di sidebar Page Login
     with st.sidebar:
