@@ -1,5 +1,5 @@
 # Modules
-import pyrebase
+import pyrebase4 as pyrebase
 import streamlit as st
 # Nama Tab Browser
 st.set_page_config(
