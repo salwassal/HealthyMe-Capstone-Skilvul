@@ -7,6 +7,6 @@ pyrebase
 streamlit-option-menu
 pandas
 plotly
-st-aggrid
+streamlit-aggrid
 streamlit-lottie
 pickle-mixin
