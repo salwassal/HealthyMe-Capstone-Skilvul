@@ -1,5 +1,4 @@
 scikit-learn
-urllib3
 pandas
 streamlit
 pyrebase4==4.5.0
