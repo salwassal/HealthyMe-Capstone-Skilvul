@@ -122,19 +122,12 @@ def show_login_signup():
     lottie_animation = load_lottiefile(lottie_path)
     st_lottie(lottie_animation, height=300)
     
-    st.markdown("""
-                <div class ='main-content'"> <p>Kualitas hidup adalah pandangan setiap individu terhadap posisinya dalam kehidupan, salah satunya terkait masalah kesehatan. Menurut WHO, definisi sehat mencakup rumusan secara luas, yaitu keadaan yang sempurna baik fisik, mental maupun sosial, tidak hanya terbebas dari penyakit atau kelemahan/cacat. Menu makanan yang sehat menjadi pilihan bagi siapa saja yang menginginkan perihal diatas. Kriteria menu makanan sehat dan bergizi kerap sekali kita dengar dengan sebutan 4 sehat lima sempurna. Asupan nutrisi dan gizi seimbang setiap makanan beserta nilai gizi esensial tubuh mencakup kandungan vitamin, mineral, karbohidrat, protein, lemak,kalsium, serat dan air dapat membantu tubuh kita menghasilkan cukup energi untuk beraktivitas setiap hari.</p>
-                </div>
-                """, unsafe_allow_html=True)
+    st.write("Kualitas hidup adalah pandangan setiap individu terhadap posisinya dalam kehidupan, salah satunya terkait masalah kesehatan. Menurut WHO, definisi sehat mencakup rumusan secara luas, yaitu keadaan yang sempurna baik fisik, mental maupun sosial, tidak hanya terbebas dari penyakit atau kelemahan/cacat. Menu makanan yang sehat menjadi pilihan bagi siapa saja yang menginginkan perihal diatas. Kriteria menu makanan sehat dan bergizi kerap sekali kita dengar dengan sebutan 4 sehat lima sempurna. Asupan nutrisi dan gizi seimbang setiap makanan beserta nilai gizi esensial tubuh mencakup kandungan vitamin, mineral, karbohidrat, protein, lemak,kalsium, serat dan air dapat membantu tubuh kita menghasilkan cukup energi untuk beraktivitas setiap hari.")
     st.write("Istilah piramida makanan menggambarkan bahwa asupan nutrisi untuk tubuh dapat dikatakan stabil dan sudah memenuhi kebutuhan gizi setiap harinya. Ilustrasi tersebut dapat membantu seseorang tentang gambaran jumlah porsi makan yang sesuai untuk dikonsumsi setiap hari dari masing-masing kelompok makanan. Kadar kandungan makanan tentunya berbeda-beda tiap jenisnya. Oleh karena itu, melalui adanya website berbasis rekomendasi makanan ini diharapkan mampu mendukung gaya hidup sehat sehingga dapat menekan jumlah angka penyakit akibat konsumsi makanan tidak sehat.")
 
     # Informasi tambahan tentang manfaat menggunakan HealtyME
     st.subheader("Mengapa Memilih HealtyME?")
     st.write("HealtyME dirancang untuk membantu Anda mencapai gaya hidup sehat dengan mudah dan menyenangkan.")
-
-    st.header("Fitur - Fitur")
-    
-    
 
     # Menu di sidebar Page Login
     with st.sidebar:
