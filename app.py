@@ -142,7 +142,6 @@ def show_main_app():
     st.write("Selamat datang, ", user_info['full_name'], "👋")
     st.divider()
 
-
     if selected == "Home":
         st.title("Halaman Utama")
         st.write("Konten untuk Halaman Utama")
