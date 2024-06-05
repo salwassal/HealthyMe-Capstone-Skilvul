@@ -130,7 +130,7 @@ class KalkulatorKalori:
 
                 col1, col2 = st.columns(2)
                 with col1:
-                    st.metric(label="BMI 📊", value=f"{bmi:.2f}", help="BMI adalah indikator yang digunakan untuk mengukur status gizi seseorang berdasarkan berat dan tinggi badan.")
+                    st.metric(label="BMI 📊", value=f"{bmi:.2f}", help="BMI adalah indikator yang digunakan untuk mengukur status gizi seseorang berdasarkan berat dan tinggi badan. Semakin rendah nilai BMI, semakin rendah berat badan relatif terhadap tinggi badan. Kategori BMI umumnya dapat didefinisikan sebagai berikut:\n\n- Kurus (Kurang Berat Badan): BMI kurang dari 18.5\n- Normal (Berat Badan Ideal): BMI antara 18.5 dan 24.9\n- Berlebih Berat Badan: BMI antara 25 dan 29.9\n- Obesitas Tingkat 1: BMI antara 30 dan 34.9\n- Obesitas Tingkat 2 (Berisiko Tinggi): BMI antara 35 dan 39.9\n- Obesitas Tingkat 3 (Sangat Berisiko): BMI 40 atau lebih")
                     st.markdown(f"**Kategori BMI**: {bmi_category}")
                     st.metric(label="Berat Badan Ideal ⚖️", value=f"{ideal_weight:.2f} kg", help="Berat badan ideal dihitung menggunakan Metode Devine berdasarkan tinggi badan dan jenis kelamin.")
                     st.metric(label="BMR 🔥", value=f"{bmr:.2f} kalori/hari", help="Basal Metabolic Rate (BMR) adalah jumlah kalori yang dibutuhkan tubuh untuk mempertahankan fungsi dasar kehidupan saat istirahat.")
@@ -150,12 +150,10 @@ class KalkulatorKalori:
 
 
         # Penjelasan lebih lanjut tentang hasil perhitungan
-        with st.expander("Penjelasan Hasil Perhitungan 📘"):
+        with st.expander("**Tips Kesehatan**"):
             st.markdown("""
-                - **BMI (Body Mass Index)**: Indeks massa tubuh yang digunakan untuk mengetahui status gizi seseorang. Semakin rendah nilai BMI, semakin rendah berat badan relatif terhadap tinggi badan.
-                - **Berat Badan Ideal**: Berat badan yang dianggap ideal untuk tinggi badan tertentu, dihitung menggunakan Metode Devine.
-                - **BMR (Basal Metabolic Rate)**: Jumlah kalori yang dibutuhkan tubuh saat istirahat untuk menjaga fungsi-fungsi dasar seperti pernapasan, detak jantung, dan fungsi organ tubuh lainnya.
-                - **TDEE (Total Daily Energy Expenditure)**: Total kebutuhan kalori harian yang mencakup aktivitas fisik dan kebutuhan dasar tubuh. TDEE mencerminkan jumlah total kalori yang dibutuhkan tubuh setiap hari.
-                - **Kalori Harian**: Jumlah kalori yang harus dikonsumsi setiap hari berdasarkan tujuan pengguna (menurunkan berat badan, mempertahankan berat badan, atau menambah berat badan).
                 - **Karbohidrat, Protein, dan Lemak**: Distribusi makronutrien yang disesuaikan dengan kebutuhan kalori harian, dihitung berdasarkan rasio standar.
+                - **Makanlah Makanan Sehat**: Prioritaskan makanan alami seperti buah, sayuran, biji-bijian utuh, dan protein berkualitas.
+                - **Berolahraga secara Teratur**: Lakukan olahraga secara teratur sesuai dengan kemampuan Anda untuk menjaga kebugaran tubuh dan kesehatan jantung.
+                - **Tetap Terhidrasi**: Minumlah air yang cukup setiap hari untuk menjaga keseimbangan cairan dalam tubuh.
             """)
