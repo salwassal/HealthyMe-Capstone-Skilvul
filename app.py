@@ -1,6 +1,10 @@
 # Modules
 import pyrebase
 import streamlit as st
+# Nama Tab Browser
+st.set_page_config(
+    page_title = "HealthyMe Apps", page_icon = "🍽️"
+)
 from streamlit_option_menu import option_menu
 from datetime import datetime
 import pandas as pd
@@ -14,10 +18,6 @@ import os
 from kalkulator import KalkulatorKalori
 from food_recom import FoodRecom
 from tentang_kami import tentangkami
-# Nama Tab Browser
-st.set_page_config(
-    page_title = "HealthyMe Apps", page_icon = "🍽️"
-)
 
 # Menambahkan CSS untuk mengganti background
 st.markdown("""
@@ -111,8 +111,6 @@ def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
         return json.load(f)
 
-
-# ==== Kode Baru P1 ===
 def show_login_signup():
     # Main Konten Page Login
     st.title("Selamat datang di HealtyME: Teman Sehat Anda!")
@@ -164,8 +162,11 @@ def show_login_signup():
                         st.rerun()
 
 def sidebar_main_app():
+    # Menampilkan informasi pengguna dan konten halaman utama di luar blok sidebar
+    user_info = db.child("users").child(st.session_state['user']['localId']).get().val()
+
     with st.sidebar:
-        st.header("Setelah login ")
+        st.header(f"Selamat datang, {user_info['full_name']} 👋")
 
         selected = option_menu(None, ["Home", 'BMI Calculator','Rekomendasi Menu','FAQ'], 
             icons=['house', 'calculator','book','question-circle'])
@@ -181,9 +182,6 @@ def show_main_app():
 
     # Menampilkan informasi pengguna dan konten halaman utama di luar blok sidebar
     user_info = db.child("users").child(st.session_state['user']['localId']).get().val()
-
-    st.write("Selamat datang, ", user_info['full_name'], "👋")
-    st.divider()
 
     if selected == "Home":
         st.title("Selamat Datang di HealthyMe")
@@ -232,7 +230,7 @@ def show_main_app():
 
     elif selected == "Rekomendasi Menu":
         FoodRecom().show()
-        
+
     elif selected == "FAQ":
         tentangkami().show()
 

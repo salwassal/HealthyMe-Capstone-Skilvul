@@ -13,9 +13,9 @@ class KalkulatorKalori:
         # Fungsi untuk menentukan kategori BMI
         def determine_bmi_category(bmi):
             if bmi < 18.5:
-                return "Kurus (Kurang Berat Badan)👎"
+                return "Kurus (Kurang Berat Badan)😫👎"
             elif 18.5 <= bmi < 24.9:
-                return "Normal (Berat Badan Ideal)👍"
+                return "Normal (Berat Badan Ideal)😆👍"
             elif 25 <= bmi < 29.9:
                 return "Berlebih Berat Badan🤔"
             elif 30 <= bmi < 34.9:

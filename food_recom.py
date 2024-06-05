@@ -47,14 +47,14 @@ class FoodRecom:
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            daily_calorie_needs = st.number_input("Kalori Harian:", min_value=1000, max_value=5000, step=100, value=2000)
+            daily_calorie_needs = st.number_input("Kalori Harian:", min_value=1000, max_value=5000, step=100, value=1000)
         with col2:
-            daily_proteins_needs = st.number_input("Protein Harian (gram):", min_value=10, max_value=300, step=10, value=70)
+            daily_proteins_needs = st.number_input("Protein Harian (gram):", min_value=10, max_value=300, step=10, value=10)
         with col3:
-            daily_carbs_needs = st.number_input("Karbohidrat Harian (gram):", min_value=50, max_value=500, step=10, value=200)
+            daily_carbs_needs = st.number_input("Karbohidrat Harian (gram):", min_value=50, max_value=500, step=10, value=50)
         
         # Tambahkan pilihan jumlah makanan yang ingin direkomendasikan
-        num_recommendations = st.number_input("Jumlah Rekomendasi Makanan:", min_value=1, max_value=10, step=1, value=3)
+        num_recommendations = st.number_input("Jumlah Rekomendasi Makanan:", min_value=1, max_value=10, step=1, value=1)
 
         if st.button("Generate Menu Makanan"):
             st.header("Menu Makanan Harian Anda")
