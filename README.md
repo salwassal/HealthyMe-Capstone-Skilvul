@@ -19,7 +19,7 @@ HealthyMe adalah sebuah aplikasi berbasis web yang dirancang untuk membantu peng
 ## Cara Menggunakan
 1. **Clone Repository:**
    ```bash
-   git clone https://github.com/username/HealthyMe.git
+   git clone https://github.com/salwassal/HealthyMe.git
    cd HealthyMe
    ```
 
